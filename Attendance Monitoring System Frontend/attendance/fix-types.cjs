@@ -1,0 +1,5 @@
+const fs=require('fs');
+let p='src/App.tsx',s=fs.readFileSync(p,'utf8');s=s.replace("import { useEffect, useState } from 'react';","import { useEffect, useState, type ComponentType } from 'react';");s=s.replace('const navigation=[','const navigation: {label:string;items:[string,string,ComponentType<{size?:number}>][]}[] = [').replace('] as const;','];');s=s.replace("onClick={()=>navigate('/analytics')}","onClick={()=>navigate(role==='Student'?'/schedule':'/analytics')}");fs.writeFileSync(p,s);
+p='src/utils/attendance.ts';s=fs.readFileSync(p,'utf8').replace('export function exportCSV(filename:string,rows:Record<string,unknown>[])','export function exportCSV<T extends object>(filename:string,rows:T[])').replace('escape(r[k])','escape(r[k as keyof T])');fs.writeFileSync(p,s);
+p='src/components/ui.tsx';s=fs.readFileSync(p,'utf8').replace('onClick={e=>e.stopPropagation()}','onClick={(e: React.MouseEvent)=>e.stopPropagation()}');fs.writeFileSync(p,s);
+try{console.log('Prettier: '+require.resolve('prettier'));}catch{}
